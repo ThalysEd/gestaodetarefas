@@ -49,6 +49,14 @@ public function update(Request $request, Task $task)
             abort(403, 'Ação não autorizada.');
         }
 
+        if ($request->has('is_completed') && !$request->has('title')) {
+        $task->update([
+            'is_completed' => $request->input('is_completed'),
+        ]);
+        return redirect()->route('tasks.index')->with('success', 'Status da tarefa atualizado!');
+    }
+
+
         $request->validate([
             'title' => 'required|max:255',
             'description' => 'nullable',
